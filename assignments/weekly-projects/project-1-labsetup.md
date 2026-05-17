@@ -195,11 +195,10 @@ To verify that the Kali Linux attacker machine can reach the Metasploitable 2 ta
 
 | # | Problem | Solution |
 |---|---------|----------|
-| 1 | **Metasploitable 2 VMDK import error** | Instead of importing directly, created a new VM manually in VirtualBox and attached the `.vmdk` as an existing disk. |
-| 2 | **VMs could not reach each other on NAT** | Both VMs defaulted to NAT mode. Created a Host-Only adapter via *File → Host Network Manager* (`192.168.56.0/24`) and assigned it to both VMs. |
-| 3 | **Nessus web UI unreachable right after start** | `nessusd` needs ~2 minutes to initialize. Waited before navigating to `https://localhost:8834`. |
-| 4 | **Kali Linux small screen resolution** | Installed VirtualBox Guest Additions (`sudo apt install virtualbox-guest-x11`) and rebooted; resolution could then be changed to 1920×1080. |
-| 5 | **Nessus plugin compilation time** | After installing Nessus, the initial plugin download and compilation took ~20–30 minutes. Waited for it to complete before running any scans. |
+| 1 | **VMs could not reach each other on NAT** | Both VMs defaulted to NAT mode. Created a Host-Only adapter via *File → Host Network Manager* (`192.168.56.0/24`) and assigned it to both VMs. |
+| 2 | **Nessus web UI unreachable right after start** | `nessusd` needs ~2 minutes to initialize. Waited before navigating to `https://localhost:8834`. |
+| 3 | **Kali Linux small screen resolution** | Installed VirtualBox Guest Additions (`sudo apt install virtualbox-guest-x11`) and rebooted; resolution could then be changed to 1920×1080. |
+| 4 | **Nessus download failed on Kali Linux** | Nessus failed to download directly from the Kali Linux VM (possible network or permissions issue). Downloaded the Nessus `.deb` package (64-bit AMD64 version) on the host machine, then shared the file with the Kali VM via a shared folder. Initial installation failed due to version mismatch; the 32-bit version was accidentally downloaded first. Re-downloaded and installed the correct 64-bit version on the x86_64 Kali Linux VM, and the installation completed successfully. |
 
 ---
 
@@ -209,4 +208,3 @@ To verify that the Kali Linux attacker machine can reach the Metasploitable 2 ta
 - Oracle VirtualBox: [https://www.virtualbox.org](https://www.virtualbox.org)
 - Tenable Nessus Essentials: [https://www.tenable.com/products/nessus/nessus-essentials](https://www.tenable.com/products/nessus/nessus-essentials)
 - Metasploitable 2 Download: [https://sourceforge.net/projects/metasploitable/](https://sourceforge.net/projects/metasploitable/)
-- Weidman, G. (2014). *Penetration Testing: A Hands-On Introduction to Hacking*. No Starch Press.
