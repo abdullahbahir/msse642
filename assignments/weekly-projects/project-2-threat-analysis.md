@@ -68,7 +68,7 @@ Key secure design concepts for this system include:
 5. Admin actions (reports, account disable, treasury operations) follow same path but require elevated authorization checks and auditing.
 
 ### Diagram 
-![Project 2 Threat Model Diagram](assignments/images/weekly projects/project2/threatmodel-diagram.png)
+![Project 2 Threat Model Diagram](../images/weekly%20projects/project2/threatmodel-diagram.png)
 
 Figure 1. Threat model architecture and data-flow diagram for the World Hiking Club application.
 
