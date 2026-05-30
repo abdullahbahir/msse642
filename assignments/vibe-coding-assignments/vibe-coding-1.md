@@ -21,6 +21,12 @@ The app has two login panels running against real API endpoints:
 
 - **VULNERABLE ENDPOINT** — a login route that concatenates user input directly into a SQL query string and stores passwords as plain text
 - **SECURE ENDPOINT** — a login route that uses parameterized queries, bcrypt password hashing (cost factor 10), and rate limiting (5 attempts per 60 seconds)
+ 
+- **Screenshot - App is running:**
+  ![Secure Login Simulator main page](../images/vibe-coding-assignments/vibe-coding-1/img.png)
+
+- **Screenshot - App startup state:**
+  ![Secure Login Simulator startup state](../images/vibe-coding-assignments/vibe-coding-1/img_1.png)
 
 For each login attempt, the simulator displays the actual SQL query that ran, a detailed explanation of what the attack did or why it was blocked, and a live system log of all attempts colour-coded by outcome. A database table shows the difference between plain-text password storage and bcrypt-hashed storage side by side.
 
@@ -46,13 +52,31 @@ When user input is concatenated directly into a SQL string instead of using para
 | `admin'; DROP TABLE users--` | Stacked Query / DDL | Terminates the login query and appends a second destructive statement, potentially deleting entire tables |
 | `admin' AND (SELECT COUNT(*) FROM users)>0--` | Subquery Probe | Embeds a nested `SELECT` to fingerprint the database schema without any visible output |
 
-### 2. Plain-Text Password Storage
+- **Screenshot - `admin' AND 1=1--`:**
+  ![Boolean-blind true SQL injection test](../images/vibe-coding-assignments/vibe-coding-1/img_2.png)
 
+- **Screenshot - `admin' AND 1=2--`:**
+  ![Boolean-blind false SQL injection test](../images/vibe-coding-assignments/vibe-coding-1/img_3.png)
+
+- **Screenshot - `admin'; DROP TABLE users--`:**
+  ![Stacked query SQL injection test](../images/vibe-coding-assignments/vibe-coding-1/img_4.png)
+
+- **Screenshot - `admin' AND (SELECT COUNT(*) FROM users)>0--`:**
+  ![Subquery probe SQL injection test](../images/vibe-coding-assignments/vibe-coding-1/img_5.png)
+
+### 2. Plain-Text Password Storage
 The vulnerable endpoint stores passwords in clear text. If the database is ever leaked, every user's actual password is immediately exposed with no cracking required.
 
-### 3. No Rate Limiting
+- **Screenshot - Plain-text password view:**
+  ![Plain-text password storage evidence](../images/vibe-coding-assignments/vibe-coding-1/img_6.png)
 
+### 3. No Rate Limiting
 The vulnerable endpoint allows unlimited login attempts, making it trivially susceptible to brute-force and credential-stuffing attacks.
+- **Screenshot - No rate limiting on vulnerable endpoint:**
+  ![No rate limiting on vulnerable endpoint](../images/vibe-coding-assignments/vibe-coding-1/img_7.png)
+
+- **Screenshot - Invalid username/password attempt:**
+  ![Invalid username and password attempt](../images/vibe-coding-assignments/vibe-coding-1/img_8.png)
 
 ### Recent Real-World Incidents
 
@@ -81,3 +105,4 @@ Using the same payloads as the teacher would make the project indistinguishable 
 The original layout used generous padding and large font sizes, requiring scrolling to see both panels.
 
 **Solution:** I reduced padding, input heights, font sizes, and gap values across every component so the entire application fits within a standard 1280×900 viewport with no scrolling needed.
+
