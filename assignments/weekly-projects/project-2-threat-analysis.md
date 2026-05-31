@@ -1,12 +1,19 @@
 # Project 2 - Threat Model Assessment (Hiking Club)
 
+**Course:** MSSE 642 – Software Assurance  
+**Project:** Project 2 - Threat Model Assessment (Hiking Club)  
+**Student:** Abdullah Bahir  
+**Date:** May 31, 2026  
+
+---
+
 ## Part 1: Secure Design Document Overview
 
 ### 1) High-Level Project Description
 World Hiking Club runs almost everything through its web app: members discover trips, register for events, and pay dues or excursion fees. Trip leaders and system admins use the same platform to post events, manage attendance outcomes, and run operational reports. The system also stores sensitive profile details such as medical conditions, performance notes, and payment history. If the app is down or compromised, club operations, member safety, and revenue are all affected. For that reason, security has to be treated as a core design requirement, not an add-on.
 
 ### 2) Organization Description
-The World Hiking Club (WHC) is a nonprofit, volunteer-run organization based in Atlanta, Georgia. It does not maintain a physical office or full-time paid staff, but officers (including a CTO) keep the platform running. The club serves members with different fitness levels and offers both local free hikes and paid travel excursions. Because nearly all business happens online, WHC depends on reliable and secure identity, scheduling, and payment workflows.
+The World Hiking Club (WHC) is a nonprofit, volunteer-run organization based in Plano, Texas. It does not maintain a physical office or full-time paid staff, but officers (including a CTO) keep the platform running. The club serves members with different fitness levels and offers both local free hikes and paid travel excursions. Because nearly all business happens online, WHC depends on reliable and secure identity, scheduling, and payment workflows.
 
 ### 3) Deployment Environment
 This threat model assumes a cloud-hosted deployment in AWS using a segmented virtual private cloud (VPC):
@@ -29,6 +36,8 @@ Key secure design concepts for this system include:
 - **Account governance controls** for banning abusive users, detecting brute-force attacks, and reducing insider misuse.
 
 ---
+
+## Part 2: Threat Model Assessment
 
 ## Part 2A: Architectural Description and Data-Flow Diagram
 
