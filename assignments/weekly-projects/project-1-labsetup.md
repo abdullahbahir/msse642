@@ -51,10 +51,6 @@ This environment mirrors industry-standard pen testing setups and will be used f
 
 Below is the architectural diagram of the lab environment:
 
-![Lab Architecture Diagram](images/lab-architecture-diagram.png)
-
-> *Diagram created using [draw.io](https://draw.io). The diagram shows the Windows host running VirtualBox with two isolated VMs connected via a Host-Only virtual network.*
-
 **Lab Network Summary:**
 
 ```
@@ -86,7 +82,7 @@ Oracle VirtualBox was downloaded and installed from the [VirtualBox website](htt
 
 **Screenshot – VirtualBox running with both VMs:**
 
-![VirtualBox Running](images/virtualbox-running.png)
+![VirtualBox Running](../images/weekly%20projects/project1/vmRunning.png)
 
 > *The screenshot above shows VirtualBox Manager with both the Kali Linux VM and Metasploitable 2 VM listed and powered on.*
 
@@ -110,7 +106,7 @@ Kali Linux was downloaded from the [official Kali website](https://www.kali.org/
 
 **Screenshot – Kali Linux logged in and running:**
 
-![Kali Linux Running](images/kali-linux-running.png)
+![Kali Linux Running](../images/weekly%20projects/project1/kali_linux_running.png)
 
 > *The screenshot shows the Kali Linux desktop environment with the terminal open, confirming a successful login.*
 
@@ -142,7 +138,7 @@ Nessus Essentials (free tier) was installed on the Kali Linux VM for vulnerabili
 
 **Screenshot – Nessus running and accessible in browser:**
 
-![Nessus Installed](images/nessus-installed.png)
+![Nessus Installed](../images/weekly%20projects/project1/nessus.png)
 
 > *The screenshot shows the Nessus Essentials web UI at `https://localhost:8834`, confirming successful installation and login.*
 
@@ -165,7 +161,7 @@ Metasploitable 2 is an intentionally vulnerable Linux VM designed as a penetrati
 
 **Screenshot – Metasploitable 2 running:**
 
-![Metasploitable 2 Running](images/metasploitable2-running.png)
+![Metasploitable 2 Running](../images/weekly%20projects/project1/Metasploitable2Running.png)
 
 > *The screenshot shows the Metasploitable 2 terminal login prompt confirming that the VM is up and running.*
 
@@ -185,7 +181,7 @@ To verify that the Kali Linux attacker machine can reach the Metasploitable 2 ta
 
 **Screenshot – Ping from Kali to Metasploitable 2:**
 
-![Ping Test](images/ping-kali-to-metasploitable.png)
+![Ping Test](../images/weekly%20projects/project1/pingTest.png)
 
 > *The screenshot shows a successful `ping` from the Kali Linux VM to the Metasploitable 2 VM with 0% packet loss, confirming that the two VMs can communicate over the Host-Only network.*
 
