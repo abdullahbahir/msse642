@@ -2,8 +2,8 @@
 
 **Course:** MSSE 642 – Software Assurance  
 **Project:** Project 2 - Threat Model Assessment (Hiking Club)  
-**Student:** Abdullah Bahir  
-**Date:** May 31, 2026  
+**Student:** Shawn Wilkinson  
+**Date:** June 3, 2026  
 
 ---
 
@@ -61,25 +61,26 @@ Key secure design concepts for this system include:
 ### Firewalls and Trust Boundaries
 - **Firewall/WAF #1 (Internet edge):** allows inbound `443/TLS` only to Front End Web Server.
 - **Firewall #2 (east-west segmentation):** allows App Service to DB on `5432` only (or equivalent RDBMS port).
-- **Trust Boundary A (Public Internet -> Club Cloud Edge):** untrusted to trusted ingress.
-- **Trust Boundary B (Web Tier -> App Tier):** controlled internal trust transition.
-- **Trust Boundary C (App Tier -> Data Tier):** high-sensitivity zone containing regulated/confidential data.
+- **Trust Boundary A (Public Internet → Club Cloud Edge):** untrusted to trusted ingress.
+- **Trust Boundary B (Web Tier → App Tier):** controlled internal trust transition.
+- **Trust Boundary C (App Tier → Data Tier):** high-sensitivity zone containing regulated/confidential data.
 
 ### Network Segments (minimum two internal trusted networks)
 - **Trusted Network 1: App Subnet (`10.10.2.0/24`)**
 - **Trusted Network 2: Data Subnet (`10.10.3.0/24`)**
 
 ### Data Flows
-1. Guest/Member/Admin browser -> Front End Web Server over HTTPS (`443`).
-2. Front End Web Server -> Backend Application Service over mTLS/internal TLS (`8443` or service mesh).
-3. Backend Application Service -> Database Server over TLS (`5432`).
-4. Backend Application Service -> External Payment Gateway over HTTPS (`443`) for payment tokenization/charges/refunds.
-5. Admin actions (reports, account disable, treasury operations) follow same path but require elevated authorization checks and auditing.
+1. Guest/Member/Admin browser → Front End Web Server over HTTPS (`443`).
+2. Front End Web Server → Backend Application Service over mTLS/internal TLS (`8443` or service mesh).
+3. Backend Application Service → Database Server over TLS (`5432`).
+4. Backend Application Service → External Payment Gateway over HTTPS (`443`) for payment tokenization, charges, and refunds.
+5. Admin actions (reports, account disable, treasury operations) follow the same path but require elevated authorization checks and auditing.
 
-### Diagram 
+### Diagram
+
 ![Project 2 Threat Model Diagram](../images/weekly%20projects/project2/threatmodel-diagram.png)
 
-Figure 1. Threat model architecture and data-flow diagram for the World Hiking Club application.
+**Figure 1.** Architecture and data-flow diagram for the World Hiking Club application showing trust boundaries, network zones (Public Internet, Public Subnet/Web Tier, App Subnet, Data Subnet), component IPs, and labeled data flows. Red dashed lines indicate trust boundaries (A, B, C); colored arrows indicate protocol and direction of each data flow.
 
 ---
 
