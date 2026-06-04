@@ -2,8 +2,8 @@
 
 **Course:** MSSE 642 – Software Assurance  
 **Project:** Project 2 - Threat Model Assessment (Hiking Club)  
-**Student:** Shawn Wilkinson  
-**Date:** June 3, 2026  
+**Student:** Abdullah Bahir  
+**Date:** May 31, 2026  
 
 ---
 
@@ -39,7 +39,7 @@ Key secure design concepts for this system include:
 
 ## Part 2: Threat Model Assessment
 
-## Part 2A: Architectural Description and Data-Flow Diagram
+### Part 2A: Architectural Description and Data-Flow Diagram
 
 ### Assumed Components and Network Zones
 - **Guest Web Client (browser-based)**
@@ -84,7 +84,7 @@ Key secure design concepts for this system include:
 
 ---
 
-## Part 2B: STRIDE Threat Model
+### Part 2B: STRIDE Threat Model
 
 ### Spoofing
 A primary spoofing risk is account takeover through credential stuffing and brute-force login attempts, which the project history indicates has already occurred. Attackers who impersonate members can register for events or alter profile data, while attackers who spoof trip leaders or admins can access confidential medical notes and treasury functions. Session hijacking is also possible if session tokens are not strongly protected with secure cookie flags, short expiry, and token rotation.
@@ -106,7 +106,7 @@ Elevation of privilege can occur when members exploit insecure direct object ref
 
 ---
 
-## Part 2C: OWASP Threat Model
+### Part 2C: OWASP Threat Model
 
 ### 1) Assessment Scope - What's on the line?
 In scope are all browser-facing features (guest browsing, authentication, registration, profile management), privileged admin/leader workflows, payment processing integration, and backend data stores containing confidential member and financial records. The highest-value assets are account credentials, medical information, leader notes, attendance history, event management integrity, and treasury/payment transactions. The business impact includes member safety concerns, loss of trust, regulatory exposure, and inability to run hikes or collect required funds.
