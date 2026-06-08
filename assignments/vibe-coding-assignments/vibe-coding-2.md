@@ -176,6 +176,7 @@ When a user clicked the **Drop Table** payload, the `users` table was deleted fr
 
 ---
 
+
 ### Problem 3 — Secure Endpoint Was Silently Hiding Injection Payloads Rather Than Explaining Them
 
 Early in development the secure endpoint returned an empty result set for injection payloads, with no explanation. Users could see it "didn't work" but not *why*, which missed the teaching opportunity.
