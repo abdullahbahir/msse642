@@ -24,7 +24,7 @@ The app runs a live in-memory SQLite database pre-populated with five user accou
 - **VULNERABLE ENDPOINT** — a search route that concatenates user input directly into a raw SQL query string, allowing any injected syntax to change the meaning of the query.
 - **SECURE ENDPOINT** — a search route that uses parameterized (prepared statement) queries, so user input is always treated as data — never as executable SQL.
 
-![SQL Injection Lab — Landing Page](../images/vibe-coding-assignments/vibe-coding-2/img.png)
+![SQL Injection Lab — Landing Page](assignments/images/vibe-coding-assignments/vibe-coding-2/img.png)
 *Landing page showing the two-panel layout (vulnerable vs. secure endpoint)*
 
 For each search, the simulator displays:
@@ -64,11 +64,8 @@ The specific techniques demonstrated in this app are:
 
 The single quote closes the intended string literal. `OR '1'='1` appends a condition that is always true, so the `WHERE` clause matches every row in the table regardless of what username was entered.
 
-![Tautology Attack](../images/vibe-coding-assignments/vibe-coding-2/img_1.png)
+![Tautology Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/img_1.png)
 *Tautology attack returning all user rows on the vulnerable endpoint*
-
-![Secure Endpoint — Tautology Blocked](../images/vibe-coding-assignments/vibe-coding-2/img_2.png)
-*Secure endpoint blocking the tautology attack — the payload is treated as a plain string*
 
 ---
 
@@ -78,11 +75,8 @@ The single quote closes the intended string literal. `OR '1'='1` appends a condi
 
 The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignored by the database engine. Combined with `OR 1=1`, this dumps every user record and any subsequent filter conditions (such as a password check) are silently discarded.
 
-![Comment Truncation Attack](../images/vibe-coding-assignments/vibe-coding-2/img_3.png)
+![Comment Truncation Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/img_3.png)
 *Comment truncation attack dumping all user records*
-
-![Secure Endpoint — Comment Truncation Blocked](../images/vibe-coding-assignments/vibe-coding-2/img_4.png)
-*Secure endpoint blocking the comment truncation attack — the payload is treated as a plain string*
 
 ---
 
@@ -92,11 +86,8 @@ The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignore
 
 `UNION SELECT` lets an attacker append an entirely new query to the original one. Here it reads the `password` column — a field the original search query never intended to expose. On the vulnerable endpoint, hashed or plain-text passwords appear directly in the results table.
 
-![UNION Attack — Vulnerable](../images/vibe-coding-assignments/vibe-coding-2/union.png)
+![UNION Attack- Vulnerable](assignments/images/vibe-coding-assignments/vibe-coding-2/union.png)
 *UNION attack exposing the password column in the results*
-
-![Secure Endpoint — UNION Blocked](../images/vibe-coding-assignments/vibe-coding-2/union_secure.png)
-*Secure endpoint blocking the UNION attack — the payload is treated as a plain string*
 
 ---
 
@@ -106,42 +97,43 @@ The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignore
 
 Rather than dumping everything, this payload filters results to only administrator accounts. An attacker can use this technique to enumerate privileged users and target them for follow-up attacks.
 
-![Admin Filter Attack](../images/vibe-coding-assignments/vibe-coding-2/admin_filter.png)
+![Admin Filter Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/admin_filter.png)
 *Conditional filter attack returning only admin-role accounts*
 
-![Secure Endpoint — Admin Filter Blocked](../images/vibe-coding-assignments/vibe-coding-2/admin_filter_secure.png)
-*Secure endpoint blocking the conditional filtering attack — the payload is treated as a plain string*
-
 ---
 
-### 5. Stacked Queries / DDL Injection
-
-**Payload:** `'; DROP TABLE users;--`
-
-A semicolon terminates the first statement and begins a second. When the database driver supports stacked (multi-statement) queries, the attacker can execute arbitrary DDL — in this case, permanently deleting the entire `users` table. The Reset Database button in the lab restores the data, which would not be possible in a real system without a backup.
-
-![Drop Table Attack](../images/vibe-coding-assignments/vibe-coding-2/img_5.png)
-*Stacked query attack dropping the users table; the Reset Database button restores it*
-
----
-
-### 6. Comment Truncation Login Bypass
+### 5. Comment Truncation Login Bypass
 
 **Payload:** `admin'--`
 
 Closes the username string early and comments out the rest of the query (including any password check). The application logs in as `admin` without requiring the correct password.
 
-![Login Bypass Attack](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_attack.png)
+![Login Bypass Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/comment_truncation.png)
 *Login bypass — the password check is commented out, granting admin access*
 
-![Secure Endpoint — Login Bypass Blocked](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_secured.png)
-*Secure endpoint blocking the login bypass — the payload is treated as a plain string*
 
 ---
 
 ### Why the Secure Endpoint Blocks All of These
 
 The secure endpoint uses a **parameterized query** (also called a prepared statement). The SQL template is compiled by the database engine before the user's input is substituted in. At that point the structure of the query is fixed — input can only supply a value, never change the query's syntax. All six payloads above are treated as literal search strings and return zero results.
+![Secure Endpoint Blocking Attack 1](assignments/images/vibe-coding-assignments/vibe-coding-2/img_2.png)
+*Secure endpoint blocking a Tautology attack — the payload is treated as a plain string*
+
+![Secure Endpoint Blocking Attack 2](assignments/images/vibe-coding-assignments/vibe-coding-2/img_4.png)
+*Secure endpoint blocking a Comment Truncation attack — the payload is treated as a plain string*
+
+![Secure Endpoint Blocking Attack 3](assignments/images/vibe-coding-assignments/vibe-coding-2/union_secure.png)
+*Secure endpoint blocking a UNION attack — the payload is treated as a plain string*
+
+![Secure Endpoint Blocking Attack 4](assignments/images/vibe-coding-assignments/vibe-coding-2/admin_filter_secure.png))
+*Secure endpoint blocking a Conditional Filtering attack — the payload is treated as a plain string*
+
+![Secure Endpoint Blockin Attack 5](assignments/images/vibe-coding-assignments/vibe-coding-2/login_bypass_secured.png)
+*Secure endpoint blocking a bypass attack — the payload is treated as a plain string*
+
+
+
 
 ---
 
@@ -165,8 +157,17 @@ After installing `better-sqlite3` for the in-memory SQL demo database, the packa
 
 ---
 
-### Problem 2 — Secure Endpoint Was Silently Hiding Injection Payloads Rather Than Explaining Them
+### Problem 2 — `DROP TABLE` Left the Database Broken for Subsequent Requests
+
+When a user clicked the **Drop Table** payload, the `users` table was deleted from the in-memory SQLite instance. Every request after that returned a SQL error because the table no longer existed, and there was no way to recover without restarting the server.
+
+**Solution:** I added a `/injection/reset` API endpoint that closes the current in-memory database, creates a brand new one, re-runs the `CREATE TABLE` statement, and re-inserts the five seed records. The frontend's **Reset Database** button calls this endpoint, making the destructive attack fully reversible within the app itself.
+
+---
+
+### Problem 3 — Secure Endpoint Was Silently Hiding Injection Payloads Rather Than Explaining Them
 
 Early in development the secure endpoint returned an empty result set for injection payloads, with no explanation. Users could see it "didn't work" but not *why*, which missed the teaching opportunity.
 
 **Solution:** I added an `attackDetected` flag to both API responses. The server checks for common injection indicators (single quotes, `--`, `UNION`, `DROP`, `OR 1=1`) in the query string and returns `attackDetected: true` when they appear. The frontend displays a contextual explanation panel when this flag is set — on the vulnerable side explaining what succeeded, and on the secure side explaining why parameterized queries neutralized it.
+
