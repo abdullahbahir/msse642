@@ -24,7 +24,7 @@ The app runs a live in-memory SQLite database pre-populated with five user accou
 - **VULNERABLE ENDPOINT** — a search route that concatenates user input directly into a raw SQL query string, allowing any injected syntax to change the meaning of the query.
 - **SECURE ENDPOINT** — a search route that uses parameterized (prepared statement) queries, so user input is always treated as data — never as executable SQL.
 
-![SQL Injection Lab — Landing Page](assignments/images/vibe-coding-assignments/vibe-coding-2/img.png)
+![SQL Injection Lab — Landing Page](../images/vibe-coding-assignments/vibe-coding-2/img.png)
 *Landing page showing the two-panel layout (vulnerable vs. secure endpoint)*
 
 For each search, the simulator displays:
@@ -64,7 +64,7 @@ The specific techniques demonstrated in this app are:
 
 The single quote closes the intended string literal. `OR '1'='1` appends a condition that is always true, so the `WHERE` clause matches every row in the table regardless of what username was entered.
 
-![Tautology Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/img_1.png)
+![Tautology Attack](../images/vibe-coding-assignments/vibe-coding-2/img_1.png)
 *Tautology attack returning all user rows on the vulnerable endpoint*
 
 ---
@@ -75,7 +75,7 @@ The single quote closes the intended string literal. `OR '1'='1` appends a condi
 
 The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignored by the database engine. Combined with `OR 1=1`, this dumps every user record and any subsequent filter conditions (such as a password check) are silently discarded.
 
-![Comment Truncation Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/img_3.png)
+![Comment Truncation Attack](../images/vibe-coding-assignments/vibe-coding-2/img_3.png)
 *Comment truncation attack dumping all user records*
 
 ---
@@ -86,7 +86,7 @@ The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignore
 
 `UNION SELECT` lets an attacker append an entirely new query to the original one. Here it reads the `password` column — a field the original search query never intended to expose. On the vulnerable endpoint, hashed or plain-text passwords appear directly in the results table.
 
-![UNION Attack- Vulnerable](assignments/images/vibe-coding-assignments/vibe-coding-2/union.png)
+![UNION Attack- Vulnerable](../images/vibe-coding-assignments/vibe-coding-2/union.png)
 *UNION attack exposing the password column in the results*
 
 ---
@@ -97,18 +97,29 @@ The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignore
 
 Rather than dumping everything, this payload filters results to only administrator accounts. An attacker can use this technique to enumerate privileged users and target them for follow-up attacks.
 
-![Admin Filter Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/admin_filter.png)
+![Admin Filter Attack](../images/vibe-coding-assignments/vibe-coding-2/admin_filter.png)
 *Conditional filter attack returning only admin-role accounts*
 
 ---
 
-### 5. Comment Truncation Login Bypass
+### 5. Stacked Queries / DDL Injection
+
+**Payload:** `'; DROP TABLE users;--`
+
+A semicolon terminates the first statement and begins a second. When the database driver supports stacked (multi-statement) queries, the attacker can execute arbitrary DDL — in this case, permanently deleting the entire `users` table. The Reset Database button in the lab restores the data, which would not be possible in a real system without a backup.
+
+![Drop Table Attack](../images/vibe-coding-assignments/vibe-coding-2/img_5.png)
+*Stacked query attack dropping the users table; the Reset Database button restores it*
+
+---
+
+### 6. Comment Truncation Login Bypass
 
 **Payload:** `admin'--`
 
 Closes the username string early and comments out the rest of the query (including any password check). The application logs in as `admin` without requiring the correct password.
 
-![Login Bypass Attack](assignments/images/vibe-coding-assignments/vibe-coding-2/comment_truncation.png)
+![Login Bypass Attack](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_attack.png)
 *Login bypass — the password check is commented out, granting admin access*
 
 
@@ -117,19 +128,19 @@ Closes the username string early and comments out the rest of the query (includi
 ### Why the Secure Endpoint Blocks All of These
 
 The secure endpoint uses a **parameterized query** (also called a prepared statement). The SQL template is compiled by the database engine before the user's input is substituted in. At that point the structure of the query is fixed — input can only supply a value, never change the query's syntax. All six payloads above are treated as literal search strings and return zero results.
-![Secure Endpoint Blocking Attack 1](assignments/images/vibe-coding-assignments/vibe-coding-2/img_2.png)
+![Secure Endpoint Blocking Attack 1](../images/vibe-coding-assignments/vibe-coding-2/img_2.png)
 *Secure endpoint blocking a Tautology attack — the payload is treated as a plain string*
 
-![Secure Endpoint Blocking Attack 2](assignments/images/vibe-coding-assignments/vibe-coding-2/img_4.png)
+![Secure Endpoint Blocking Attack 2](../images/vibe-coding-assignments/vibe-coding-2/img_4.png)
 *Secure endpoint blocking a Comment Truncation attack — the payload is treated as a plain string*
 
-![Secure Endpoint Blocking Attack 3](assignments/images/vibe-coding-assignments/vibe-coding-2/union_secure.png)
+![Secure Endpoint Blocking Attack 3](../images/vibe-coding-assignments/vibe-coding-2/union_secure.png)
 *Secure endpoint blocking a UNION attack — the payload is treated as a plain string*
 
-![Secure Endpoint Blocking Attack 4](assignments/images/vibe-coding-assignments/vibe-coding-2/admin_filter_secure.png))
+![Secure Endpoint Blocking Attack 4](../images/vibe-coding-assignments/vibe-coding-2/admin_filter_secure.png)
 *Secure endpoint blocking a Conditional Filtering attack — the payload is treated as a plain string*
 
-![Secure Endpoint Blockin Attack 5](assignments/images/vibe-coding-assignments/vibe-coding-2/login_bypass_secured.png)
+![Secure Endpoint Blockin Attack 5](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_secured.png)
 *Secure endpoint blocking a bypass attack — the payload is treated as a plain string*
 
 
