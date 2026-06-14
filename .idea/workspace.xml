@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0da8948b-a3a4-40b7-b3c1-4dbbe5ca79ff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img_4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/images/weekly projects/project3/img_5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignments/weekly-projects/project-3-penTesting1.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/abdul/OneDrive/Desktop/Regis University/Course 7/msse642" value="3Dp5gErcRAzzLfq6Fg1Jr2wGWH4" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/week4" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3Dp5gErcRAzzLfq6Fg1Jr2wGWH4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/week6&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/abdul/OneDrive/Desktop/Regis University/Course 7/msse642&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0da8948b-a3a4-40b7-b3c1-4dbbe5ca79ff" name="Changes" comment="" />
+      <created>1778966281420</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778966281420</updated>
+      <workItem from="1778966283960" duration="7423000" />
+      <workItem from="1780159971217" duration="219000" />
+      <workItem from="1780161181129" duration="1183000" />
+      <workItem from="1780167151311" duration="3003000" />
+      <workItem from="1781312397065" duration="2000" />
+      <workItem from="1781389410074" duration="1787000" />
+      <workItem from="1781391649693" duration="720000" />
+      <workItem from="1781395400828" duration="265000" />
+      <workItem from="1781452197430" duration="7288000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
