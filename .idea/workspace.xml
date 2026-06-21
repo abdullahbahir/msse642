@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0da8948b-a3a4-40b7-b3c1-4dbbe5ca79ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/cloud_storage.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/debug_mode.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/directory_listing1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/directory_listing2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/landingPage.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/login_bypass_attack.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/security_headers.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assignments/images/vibe-coding-assignments/vibe-coding-3/verbose_error_messages.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignments/vibe-coding-assignments/vibe-coding-2.md" beforeDir="false" afterPath="$PROJECT_DIR$/assignments/vibe-coding-assignments/vibe-coding-2.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +72,7 @@
       <workItem from="1781395400828" duration="265000" />
       <workItem from="1781452197430" duration="11244000" />
       <workItem from="1781976084303" duration="423000" />
-      <workItem from="1781977897320" duration="5446000" />
+      <workItem from="1781977897320" duration="6999000" />
     </task>
     <servers />
   </component>

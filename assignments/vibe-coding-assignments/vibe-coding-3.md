@@ -1,4 +1,4 @@
-# Security Misconfiguration Lab — Vibe Coding Assignment #2
+# Security Misconfiguration Lab — Vibe Coding Assignment #3
 
 **Course:** MSSE 642 – Software Assurance  
 **Project:** OWASP Vulnerability — A02:2025 Security Misconfiguration  
