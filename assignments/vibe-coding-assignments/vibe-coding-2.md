@@ -1,150 +1,138 @@
-# Security Risk Analysis — Vibe Coding Assignment \#2
+# Security Misconfiguration Lab — Vibe Coding Assignment #2
 
 **Course:** MSSE 642 – Software Assurance  
-**Project:** OWASP Vulnerability — A05:2025 Injection  
+**Project:** OWASP Top 10:2025 — A02: Security Misconfiguration  
 **Student:** Abdullah Bahir  
-**Date:** June 7, 2026
+**Date:** June 20, 2026  
+**Live Demo:** [Insert your Replit app URL here]
 
 ---
 
 ## Overview: Vibe Coding Tool
 
-I chose **Replit Agent** as my vibe coding tool. Replit Agent is an AI-powered development assistant built directly into the Replit IDE that can generate, edit, and debug full-stack code through natural language prompts — no manual file setup or configuration required.
+I chose **Replit Agent** as my vibe coding tool. Replit Agent is an AI-powered development assistant built directly into the Replit IDE that generates, edits, and debugs full-stack code through natural language prompts without requiring manual project setup.
 
-I chose it because it handles the entire stack in one place: it scaffolded the React frontend, Express API server, and shared TypeScript libraries simultaneously, wired them together with a reverse proxy, and set up the OpenAPI contract between them. This let me focus on the security concepts rather than boilerplate. It was also easy to iterate — I could describe a change like "add a new SQL injection attack type" and it would update both the backend logic and the frontend UI in one step.
+I chose it because it handled the entire project structure in one place: it scaffolded the React frontend, created the shared UI components, and wired the six demo pages together in a single development environment. This let me focus on the security concepts rather than boilerplate. Iteration was fast — I could describe a change such as “add a directory listing demo with clickable files” and it would produce working interactive components immediately.
 
 ---
 
 ## Description of the Program
 
-I built an **SQL Injection Lab** — an interactive, hands-on educational tool that lets users actively exploit and defend against injection vulnerabilities in real time, rather than just reading about them.
+I built the **Security Misconfiguration Lab** — an interactive, hands-on educational tool that lets users explore six distinct misconfiguration vulnerabilities side by side in vulnerable and secure modes rather than just reading about them.
 
-The app runs a live in-memory SQLite database pre-populated with five user accounts (including an admin). It exposes two distinct search endpoints:
+The application is entirely frontend-based. All demos are simulated in the browser, which means there are no real credentials, no real databases, and no risk of accidental data exposure. Each lab includes a central **Vulnerable / Secure** toggle that instantly switches between the two states so users can compare insecure and hardened configurations in the same interface.
 
-- **VULNERABLE ENDPOINT** — a search route that concatenates user input directly into a raw SQL query string, allowing any injected syntax to change the meaning of the query.
-- **SECURE ENDPOINT** — a search route that uses parameterized (prepared statement) queries, so user input is always treated as data — never as executable SQL.
+### The Six Labs
 
-![SQL Injection Lab — Landing Page](../images/vibe-coding-assignments/vibe-coding-2/img.png)
-*Landing page showing the two-panel layout (vulnerable vs. secure endpoint)*
+| Lab | What it demonstrates |
+|---|---|
+| Default Credentials | Factory-default usernames and passwords granting immediate admin access |
+| Verbose Errors | Stack traces leaking server paths, database credentials, and version information |
+| Security Headers | Missing HTTP headers leaving users open to XSS, clickjacking, MIME sniffing, and SSL stripping |
+| Directory Listing | Web server exposing internal files such as `.env`, private keys, and SQL backups |
+| Cloud Storage | Publicly accessible S3-style bucket exposing customer data and API keys |
+| Debug Mode | Production app running with `DEBUG=True`, dumping environment details on any error |
 
-For each search, the simulator displays:
-- The exact SQL query that was executed
-- A live results table
-- A status banner showing whether the attack succeeded or was blocked
-- A side-by-side explanation of why the vulnerable code fails and why the secure code is safe
+### Lab 1 — Default Credentials
 
-A **Reset Database** button restores the table to its original state after destructive attacks like `DROP TABLE`.
+The demo simulates a fictional **AdminPanel v1.0** login screen. In Vulnerable Mode, preset attack buttons fill the form with well-known default credentials such as `admin/admin`, `root/root`, and `admin/123456`. Submitting them grants access and displays a fake admin dashboard with user counts, API keys, and a partial secret key.
 
-Six pre-built attack payload buttons are provided so users can try each technique without worrying about getting the SQL syntax exactly right:
+In Secure Mode, all default-credential attempts are rejected with a message confirming that common passwords are not accepted.
 
-| Button | Payload | Technique |
-|---|---|---|
-| Bypass Login | `' OR '1'='1` | Tautology — always-true condition returns all rows |
-| Dump All Users | `' OR 1=1--` | Comment truncation combined with OR |
-| UNION Attack | `' UNION SELECT id, username, password, email, role FROM users--` | Appends a second SELECT to expose the password column |
-| Admin Only | `' OR role='admin'--` | Filters results to privileged accounts only |
-| Drop Table | `'; DROP TABLE users;--` | Stacked query that deletes the entire table |
-| Comment Truncate | `admin'--` | Terminates the string early, bypassing any password check |
+### Lab 2 — Verbose Errors
 
-I chose this type of program because SQL injection has been in the OWASP Top 10 since the list was first published, and it remains one of the most exploited vulnerabilities in production systems today. A live, two-panel comparison — where you run the exact same string against both endpoints and see opposite outcomes — makes the danger concrete in a way that static documentation cannot.
+The demo simulates a `/api/users/:id` endpoint. Entering an injection-style payload such as `abc'--` triggers an error.
 
----
+In Vulnerable Mode, the response is a raw stack trace containing:
 
-## Description of the Vulnerability — OWASP A05:2025 Injection
+- The exact SQL query that failed
+- Internal file paths such as `/var/www/app/models/User.php`
+- Server software version details such as PHP and Apache versions
+- Database hostnames and plaintext credentials
 
-Injection vulnerabilities occur when an application sends untrusted data to an interpreter as part of a command or query. The interpreter cannot distinguish between the intended command and the attacker-supplied data, so the injected content is executed with the same privileges as the application itself.
+In Secure Mode, the response is a single generic JSON object with no internal detail.
 
-SQL Injection is the most well-known subtype. It targets applications that build database queries by concatenating user-supplied strings rather than using parameterized statements.
+### Lab 3 — Security Headers
 
-The specific techniques demonstrated in this app are:
+The demo renders an HTTP response inspector. In Vulnerable Mode, the response is missing the six key security headers. Each missing header is marked with a red indicator.
 
-### 1. Tautology / Authentication Bypass
+Clicking any row expands a panel explaining:
 
-**Payload:** `' OR '1'='1`
+- What the header controls
+- What attack it helps prevent, such as XSS, clickjacking, MIME sniffing, or SSL stripping
 
-The single quote closes the intended string literal. `OR '1'='1` appends a condition that is always true, so the `WHERE` clause matches every row in the table regardless of what username was entered.
+In Secure Mode, every header is present with its recommended value, and each row turns green.
 
-![Tautology Attack](../images/vibe-coding-assignments/vibe-coding-2/img_1.png)
-*Tautology attack returning all user rows on the vulnerable endpoint*
+### Lab 4 — Directory Listing
 
----
+The demo renders a fake Apache-style file browser. In Vulnerable Mode, the listing includes sensitive files such as:
 
-### 2. Comment Truncation
+| File | Risk |
+|---|---|
+| `.env` | Database host, credentials, AWS secret, SMTP password |
+| `config.php` | Hardcoded root credentials and AWS keys |
+| `backup.sql` | Full production database dump |
+| `private-keys.pem` | RSA private key |
+| `install.php` | Setup script with default admin credentials |
 
-**Payload:** `' OR 1=1--`
+Clicking any file shows its fake contents.
 
-The double-dash (`--`) is a SQL comment delimiter. Everything after it is ignored by the database engine. Combined with `OR 1=1`, this dumps every user record and any subsequent filter conditions (such as a password check) are silently discarded.
+In Secure Mode, the server returns a `403 Forbidden` response and directory browsing is completely blocked.
 
-![Comment Truncation Attack](../images/vibe-coding-assignments/vibe-coding-2/img_3.png)
-*Comment truncation attack dumping all user records*
+### Lab 5 — Cloud Storage
 
----
+The demo simulates a public S3-style object storage bucket. In Vulnerable Mode, a bucket listing shows sensitive files including `customer-data.csv`, `api-keys.txt`, and `config/production.env`. Clicking **Get** on any sensitive file triggers a simulated download and previews the exposed content, including fake Social Security numbers, credit card numbers, and API tokens.
 
-### 3. UNION-Based Data Extraction
+In Secure Mode, the bucket returns `403 Forbidden` and `AllPublicAccessBlocked`.
 
-**Payload:** `' UNION SELECT id, username, password, email, role FROM users--`
+### Lab 6 — Debug Mode
 
-`UNION SELECT` lets an attacker append an entirely new query to the original one. Here it reads the `password` column — a field the original search query never intended to expose. On the vulnerable endpoint, hashed or plain-text passwords appear directly in the results table.
+The demo simulates a Django-powered web application. Clicking **Trigger Error** sends a bad database query.
 
-![UNION Attack- Vulnerable](../images/vibe-coding-assignments/vibe-coding-2/union.png)
-*UNION attack exposing the password column in the results*
+In Vulnerable Mode, Django’s debug page returns the full error context:
 
----
+- The exact SQL query
+- Local variable values at the time of the crash
+- `settings.DATABASE_URL` with plaintext credentials
+- `settings.SECRET_KEY` exposed in plaintext
+- Server hostname and Python/Django version
 
-### 4. Conditional Filtering
-
-**Payload:** `' OR role='admin'--`
-
-Rather than dumping everything, this payload filters results to only administrator accounts. An attacker can use this technique to enumerate privileged users and target them for follow-up attacks.
-
-![Admin Filter Attack](../images/vibe-coding-assignments/vibe-coding-2/admin_filter.png)
-*Conditional filter attack returning only admin-role accounts*
+In Secure Mode, the app returns a plain `500` page with a reference code only — the behavior expected in production.
 
 ---
 
-### 5. Stacked Queries / DDL Injection
+## Description of the Vulnerability — OWASP A02:2025 Security Misconfiguration
 
-**Payload:** `'; DROP TABLE users;--`
+Security Misconfiguration occurs when security settings are missing, left at insecure defaults, applied inconsistently, or not maintained over time.
 
-A semicolon terminates the first statement and begins a second. When the database driver supports stacked (multi-statement) queries, the attacker can execute arbitrary DDL — in this case, permanently deleting the entire `users` table. The Reset Database button in the lab restores the data, which would not be possible in a real system without a backup.
+It is one of the most common and dangerous categories in the OWASP Top 10 because it does not require a code flaw. A perfectly written application can still be exposed if the deployment, server, cloud service, or framework is configured incorrectly.
 
-![Drop Table Attack](../images/vibe-coding-assignments/vibe-coding-2/img_5.png)
-*Stacked query attack dropping the users table; the Reset Database button restores it*
+Common causes include:
 
----
+- Not defining secure defaults, such as missing headers or open access controls
+- Leaving default passwords or debug settings enabled
+- Promoting development settings into production
+- Failing to remove unnecessary services, ports, or features
 
-### 6. Comment Truncation Login Bypass
+### Common Subcategories
 
-**Payload:** `admin'--`
+#### Default Credentials
+Routers, cameras, databases, CMS platforms, and cloud dashboards often ship with factory passwords. If those passwords are never changed, attackers can gain access immediately.
 
-Closes the username string early and comments out the rest of the query (including any password check). The application logs in as `admin` without requiring the correct password.
+#### Verbose Error Messages
+Detailed error output is helpful during development but dangerous in production. A single uncaught exception can reveal file paths, version numbers, database hostnames, and even secrets that help an attacker continue the attack.
 
-![Login Bypass Attack](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_attack.png)
-*Login bypass — the password check is commented out, granting admin access*
+#### Missing Security Headers
+Browsers enforce security policies only when servers send the correct headers. Without them, the browser defaults to permissive behavior and becomes easier to abuse.
 
+#### Directory Listing
+If a web server is configured to browse directories when no default file exists, users may see backups, configuration files, or private keys that should never be public.
 
----
+#### Cloud Storage Misconfiguration
+Cloud buckets and object storage services can be accidentally left public. When that happens, anyone who finds the bucket can list or download sensitive files.
 
-### Why the Secure Endpoint Blocks All of These
-
-The secure endpoint uses a **parameterized query** (also called a prepared statement). The SQL template is compiled by the database engine before the user's input is substituted in. At that point the structure of the query is fixed — input can only supply a value, never change the query's syntax. All six payloads above are treated as literal search strings and return zero results.
-![Secure Endpoint Blocking Attack 1](../images/vibe-coding-assignments/vibe-coding-2/img_2.png)
-*Secure endpoint blocking a Tautology attack — the payload is treated as a plain string*
-
-![Secure Endpoint Blocking Attack 2](../images/vibe-coding-assignments/vibe-coding-2/img_4.png)
-*Secure endpoint blocking a Comment Truncation attack — the payload is treated as a plain string*
-
-![Secure Endpoint Blocking Attack 3](../images/vibe-coding-assignments/vibe-coding-2/union_secure.png)
-*Secure endpoint blocking a UNION attack — the payload is treated as a plain string*
-
-![Secure Endpoint Blocking Attack 4](../images/vibe-coding-assignments/vibe-coding-2/admin_filter_secure.png)
-*Secure endpoint blocking a Conditional Filtering attack — the payload is treated as a plain string*
-
-![Secure Endpoint Blockin Attack 5](../images/vibe-coding-assignments/vibe-coding-2/login_bypass_secured.png)
-*Secure endpoint blocking a bypass attack — the payload is treated as a plain string*
-
-
-
+#### Debug Mode in Production
+Framework debug pages often expose environment variables, stack traces, and application secrets. Those features are useful locally but should never be exposed to the public internet.
 
 ---
 
@@ -152,34 +140,38 @@ The secure endpoint uses a **parameterized query** (also called a prepared state
 
 | Year | Incident | Impact |
 |---|---|---|
-| 2023 | **MOVEit Transfer** — The Cl0p ransomware group exploited a SQL injection zero-day in the MOVEit file-transfer application. | Data from 2,700+ organizations compromised, including the BBC, British Airways, and multiple US federal agencies. Unauthenticated attackers could extract files and database contents directly. |
-| 2021 | **GoDaddy** — Attackers gained access to 1.2 million Managed WordPress customer accounts; the breach was deepened by SQL injection against internal tooling. | Email addresses, sFTP credentials, and SSL private keys exposed. |
-| 2020 | **Freepik / Flaticon** — An SQL injection attack against the platforms exposed 8.3 million user records, including bcrypt and MD5-hashed passwords. | MD5-hashed passwords were cracked almost immediately, demonstrating that weak hashing compounds the damage of injection. |
+| 2023 | **Microsoft Power Platform / Power Apps portals** — Some portals were misconfigured to allow public table access by default. | Sensitive records from multiple organizations were exposed until the default behavior was corrected. |
+| 2022 | **Toyota** — A cloud asset was left exposed with access to customer vehicle data. | Customer location and vehicle information remained exposed for an extended period before discovery. |
+| 2021 | **Twitch** — A server misconfiguration exposed source code, creator payout data, and internal security tooling. | Large volumes of internal data were leaked publicly. |
+| 2019 | **Capital One** — A misconfigured web application firewall enabled SSRF against the AWS metadata service and exposed over-permissive cloud access. | More than 100 million customer records were stolen, leading to a major regulatory settlement. |
 
 ---
 
 ## Problems Encountered and How I Solved Them
 
-### Problem 1 — `better-sqlite3` Native Bindings Not Building
+### Problem 1 — Missing Lab Content After the Initial Scaffold
 
-After installing `better-sqlite3` for the in-memory SQL demo database, the package manager printed a warning that build scripts were ignored and the native `.node` file was missing. The server started but crashed immediately when the injection route tried to open a database connection.
+After the AI agent generated the main layout and shared components, it ran out of context before finishing all six individual demo sections. The application felt incomplete because several lab screens were missing or only partially implemented.
 
-**Solution:** I added `better-sqlite3` to the `onlyBuiltDependencies` list in `pnpm-workspace.yaml`, then ran `pnpm install` again. This allowed the native binding to compile via `node-gyp`, and the server started cleanly on the next restart.
+**Solution:** I reviewed the generated structure, identified the missing sections, and completed each lab manually so the app had consistent vulnerable and secure views throughout.
+
+### Problem 2 — The Secure and Vulnerable States Needed Clearer Separation
+
+Early versions of the lab showed both states, but the differences were not obvious enough for a class demonstration.
+
+**Solution:** I added stronger visual labels, clearer explanation text, and dedicated status banners so users could immediately understand whether a configuration was safe or unsafe.
+
+### Problem 3 — Simulated Secrets Needed to Feel Real Without Exposing Real Data
+
+The lab needed realistic examples of sensitive information such as API keys, database credentials, and environment variables, but it could not contain real secrets.
+
+**Solution:** I used clearly fake sample values and structured them to resemble real production data closely enough for teaching purposes while keeping the project safe and non-sensitive.
 
 ---
 
-### Problem 2 — `DROP TABLE` Left the Database Broken for Subsequent Requests
+## Key Takeaways
 
-When a user clicked the **Drop Table** payload, the `users` table was deleted from the in-memory SQLite instance. Every request after that returned a SQL error because the table no longer existed, and there was no way to recover without restarting the server.
+This project showed that security misconfiguration is often about what is missing or incorrectly enabled rather than about broken application logic. The lab makes that lesson visible by letting users compare insecure and secure configurations side by side.
 
-**Solution:** I added a `/injection/reset` API endpoint that closes the current in-memory database, creates a brand new one, re-runs the `CREATE TABLE` statement, and re-inserts the five seed records. The frontend's **Reset Database** button calls this endpoint, making the destructive attack fully reversible within the app itself.
-
----
-
-
-### Problem 3 — Secure Endpoint Was Silently Hiding Injection Payloads Rather Than Explaining Them
-
-Early in development the secure endpoint returned an empty result set for injection payloads, with no explanation. Users could see it "didn't work" but not *why*, which missed the teaching opportunity.
-
-**Solution:** I added an `attackDetected` flag to both API responses. The server checks for common injection indicators (single quotes, `--`, `UNION`, `DROP`, `OR 1=1`) in the query string and returns `attackDetected: true` when they appear. The frontend displays a contextual explanation panel when this flag is set — on the vulnerable side explaining what succeeded, and on the secure side explaining why parameterized queries neutralized it.
+The biggest takeaway is that hardening an application requires more than secure code. It also requires safe defaults, proper deployment settings, and ongoing configuration review across the entire environment.
 
