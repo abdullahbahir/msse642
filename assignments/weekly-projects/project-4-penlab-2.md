@@ -203,10 +203,10 @@ The application is then accessible at `http://<kali-vm-ip>:5000` from the host m
 
 | Screenshot | Description |
 |-----------|-------------|
-| ![Kali Node Install](images/p4-06-kali-node-install.png) | Node.js 22 installed on Kali VM |
-| ![Docker PostgreSQL Running](images/p4-07-docker-postgres.png) | PostgreSQL container running in Docker |
-| ![App Running on Kali](images/p4-08-app-on-kali.png) | Hiking Club app running at localhost:5000 on Kali VM |
-| ![Seed Success](images/p4-09-seed-success.png) | Database seeded with trails, events, members, and admin user |
+| ![Kali Node Install](../images/weekly%20projects/project4/p4-06-kali-node-install.png) | Node.js 22 installed on Kali VM |
+| ![Docker PostgreSQL Running](../images/weekly%20projects/project4/p4-07-docker-postgres.png) | PostgreSQL container running in Docker |
+| ![App Running on Kali](../images/weekly%20projects/project4/p4-08-app-on-kali.png) | Hiking Club app running at localhost:5000 on Kali VM |
+| ![Seed Success](../images/weekly%20projects/project4/p4-09-seed-success.png) | Database seeded with trails, events, members, and admin user |
 
 ---
 
@@ -281,11 +281,11 @@ The following vulnerability classes were tested and no exploitable issues were d
 
 | Screenshot | Description |
 |-----------|-------------|
-| ![ZAP Spider Running](images/p4-10-zap-spider.png) | ZAP spider crawling the Hiking Club application |
-| ![ZAP Active Scan](images/p4-11-zap-active-scan.png) | ZAP active scanner in progress |
-| ![ZAP Alerts](images/p4-12-zap-alerts.png) | ZAP alerts panel showing findings by risk level |
-| ![ZAP CSP Alert Detail](images/p4-13-zap-csp-detail.png) | Detail view of the missing CSP header alert |
-| ![ZAP HTML Report](images/p4-14-zap-report.png) | ZAP generated HTML summary report |
+| ![ZAP Spider Running](../images/weekly%20projects/project4/p4-10-zap-spider.png) | ZAP spider crawling the Hiking Club application |
+| ![ZAP Active Scan](../images/weekly%20projects/project4/p4-11-zap-active-scan.png) | ZAP active scanner in progress |
+| ![ZAP Alerts](../images/weekly%20projects/project4/p4-12-zap-alerts.png) | ZAP alerts panel showing findings by risk level |
+| ![ZAP CSP Alert Detail](../images/weekly%20projects/project4/p4-13-zap-csp-detail.png) | Detail view of the missing CSP header alert |
+| ![ZAP HTML Report](../images/weekly%20projects/project4/p4-14-zap-report.png) | ZAP generated HTML summary report |
 
 ### Analysis
 
